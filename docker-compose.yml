@@ -13,7 +13,9 @@ services:
 
   sos:
     build: .
-    command: sos api:stream examples/cuba.yml --rabbitmq-queue tweets
+    command: sos api:stream --rabbitmq-queue tweets ${SOS_STREAM_FILTER_FILE:-examples/cuba.yml}
+    volumes:
+      - .:/data
     depends_on:
       - rabbitmq
     networks:
@@ -22,7 +24,9 @@ services:
 
   sos-watcher:
     build: .
-    command: sos mq:watch --queue tweets --output-path-prefix tweet-stream
+    command: sos mq:watch --queue tweets --output-path-prefix /data/out/stream
+    volumes:
+      - .:/data
     depends_on:
       - rabbitmq
     networks:
