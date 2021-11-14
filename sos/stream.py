@@ -56,7 +56,7 @@ class FileOutputStream:
         log.info(f'opening path={path}')
         root_path = os.path.dirname(path)
         if root_path:
-            os.makedirs(root_path)
+            os.makedirs(root_path, exist_ok=True)
         self.fp = open(path, mode='ab')
         self.path = path
         return zstd.writer(self.fp)

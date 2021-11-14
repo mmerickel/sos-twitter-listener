@@ -2,6 +2,7 @@ version: "3.8"
 services:
   rabbitmq:
     image: rabbitmq:3
+    restart: always
     ports:
       - 5672:5672
       - 15672:15672
@@ -14,6 +15,7 @@ services:
   sos:
     build: .
     command: sos api:stream --rabbitmq-queue tweets ${SOS_STREAM_FILTER_FILE:-examples/cuba.yml}
+    restart: always
     volumes:
       - .:/data
     depends_on:
@@ -25,6 +27,7 @@ services:
   sos-watcher:
     build: .
     command: sos mq:watch --queue tweets --output-path-prefix /data/out/stream
+    restart: always
     volumes:
       - .:/data
     depends_on:
