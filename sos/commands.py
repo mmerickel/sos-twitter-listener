@@ -4,8 +4,8 @@ def generic_options(parser):
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('--profile', default='profile.yml')
 
-@command('.stream', 'api:stream')
-def stream(parser):
+@command('.tweet_stream', 'twitter:stream')
+def tweet_stream(parser):
     """
     Listen to the twitter firehouse.
 
@@ -23,12 +23,12 @@ def stream(parser):
         ),
     )
     parser.add_argument('--rabbitmq-exchange', default='')
-    parser.add_argument('--rabbitmq-queue')
+    parser.add_argument('--rabbitmq-routing-key')
 
-@command('.mq_watch', 'mq:watch')
-def mq_watch(parser):
+@command('.mq_archiver', 'mq:archive')
+def mq_archiver(parser):
     """
-    Listen for messages in the queue.
+    Listen for messages in the queue and save them.
 
     """
     parser.add_argument(

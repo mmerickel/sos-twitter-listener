@@ -3,7 +3,7 @@ import logging
 import pika
 import signal
 
-from .stream import (
+from .output_streams import (
     CompositeOutputStream,
     FileOutputStream,
     StdoutOutputStream,
