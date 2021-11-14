@@ -13,10 +13,8 @@ log = logging.getLogger(__name__)
 
 def main(cli, args):
     profile = cli.profile
-    rabbitmq_profile = profile.get('rabbitmq', {})
-    rabbitmq_parameters = pika.URLParameters(rabbitmq_profile['url'])
 
-    connection = pika.BlockingConnection(rabbitmq_parameters)
+    connection = pika.BlockingConnection(pika.URLParameters(profile['rabbitmq']['url']))
     channel = connection.channel()
     channel.queue_declare(args.queue)
 

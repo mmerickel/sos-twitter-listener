@@ -204,10 +204,8 @@ def main(cli, args):
     if args.output_path_prefix:
         output_stream.add_stream(FileOutputStream(args.output_path_prefix))
     if args.rabbitmq_queue:
-        rabbitmq_profile = profile.get('rabbitmq', {})
-        rabbitmq_parameters = pika.URLParameters(rabbitmq_profile['url'])
         output_stream.add_stream(RabbitMqOutputStream(
-            rabbitmq_parameters,
+            pika.URLParameters(profile['rabbitmq']['url']),
             exchange=args.rabbitmq_exchange,
             queue=args.rabbitmq_queue,
         ))
