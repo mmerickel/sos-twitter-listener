@@ -25,6 +25,5 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 
 COPY sos/ ./sos
 COPY docker-profile.yml ./profile.yml
-COPY examples/ ./examples
 
 ENTRYPOINT ["pipenv", "run"]
