@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  rabbitmq:
+    image: rabbitmq:3
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/
+      - rabbitmq-logs:/var/log/rabbitmq/
+    networks:
+      - sos
+
+  sos:
+    build: .
+    command: sos api:stream examples/cuba.yml --rabbitmq-queue tweets
+    depends_on:
+      - rabbitmq
+    networks:
+      - sos
+    env_file: .env
+
+volumes:
+  rabbitmq-data:
+  rabbitmq-logs:
+
+networks:
+  sos:

@@ -1,0 +1,11 @@
+twitter:
+  access_token: !ENV ${TWITTER_ACCESS_TOKEN}
+  access_token_secret: !ENV ${TWITTER_ACCESS_TOKEN_SECRET}
+  consumer_key: !ENV ${TWITTER_CONSUMER_KEY}
+  consumer_secret: !ENV ${TWITTER_CONSUMER_SECRET}
+
+rabbitmq:
+  url: !ENV ${RABBITMQ_URL}
+
+stream:
+  report_interval: 5
