@@ -14,7 +14,7 @@ services:
 
   sos:
     build: .
-    command: sos api:stream --rabbitmq-queue tweets ${SOS_STREAM_FILTER_FILE:-examples/cuba.yml}
+    command: sos api:stream --rabbitmq-queue tweets ${SOS_STREAM_FILTER_FILE:-/data/examples/cuba.yml}
     restart: always
     volumes:
       - .:/data
