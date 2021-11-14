@@ -19,9 +19,6 @@ class TweetStream(tweepy.Stream):
         self.output_stream = output_stream
         if report_interval is not None:
             self.report_interval = report_interval
-
-    def on_connect(self):
-        super().on_connect()
         self.last_report_at = datetime.utcnow()
         self.num_records_since_report = 0
 
