@@ -20,6 +20,15 @@ services:
       - sos
     env_file: .env
 
+  sos-watcher:
+    build: .
+    command: sos mq:watch --queue tweets --output-path-prefix tweet-stream
+    depends_on:
+      - rabbitmq
+    networks:
+      - sos
+    env_file: .env
+
 volumes:
   rabbitmq-data:
   rabbitmq-logs:
