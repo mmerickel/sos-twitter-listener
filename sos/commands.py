@@ -55,3 +55,4 @@ def mq_archiver(parser):
         ),
     )
     parser.add_argument('--gcp-image-bucket')
+    parser.add_argument('--gcp-firestore-collection')

@@ -8,6 +8,7 @@ python_version = "3.9"
 
 [packages]
 cached-property = "*"
+google-cloud-firestore = "*"
 google-cloud-storage = "*"
 httpx = "*"
 hupper = "*"

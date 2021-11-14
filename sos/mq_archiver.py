@@ -18,6 +18,7 @@ def main(cli, args):
     output_stream = output_stream_from_config(
         profile,
         output_path_prefix=args.output_path_prefix,
+        gcp_firestore_collection=args.gcp_firestore_collection,
         gcp_image_bucket=args.gcp_image_bucket,
     )
 
