@@ -1,4 +1,9 @@
+from datetime import timedelta
 from subparse import command
+
+from .settings import asduration
+
+default_report_interval = timedelta(seconds=5)
 
 def generic_options(parser):
     parser.add_argument('-v', '--verbose', action='store_true')
@@ -16,6 +21,11 @@ def tweet_stream(parser):
     """
     parser.add_argument('filter_file')
     parser.add_argument(
+        '--report-interval',
+        type=asduration,
+        default=default_report_interval,
+    )
+    parser.add_argument(
         '--output-path-prefix',
         help=(
             'Store the data compressed to disk. '
@@ -31,6 +41,12 @@ def mq_archiver(parser):
     Listen for messages in the queue and save them.
 
     """
+    parser.add_argument('--queue', required=True)
+    parser.add_argument(
+        '--report-interval',
+        type=asduration,
+        default=default_report_interval,
+    )
     parser.add_argument(
         '--output-path-prefix',
         help=(
@@ -38,4 +54,4 @@ def mq_archiver(parser):
             'Helpful for debugging or redundancy.'
         ),
     )
-    parser.add_argument('--queue', required=True)
+    parser.add_argument('--gcp-image-bucket')

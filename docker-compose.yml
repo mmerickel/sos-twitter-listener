@@ -12,7 +12,7 @@ services:
     networks:
       - sos
 
-  sos:
+  sos-stream:
     build: .
     command: sos twitter:stream --rabbitmq-routing-key tweets ${SOS_STREAM_FILTER_FILE:-/data/examples/cuba.yml}
     restart: always
@@ -24,17 +24,17 @@ services:
       - sos
     env_file: .env
 
-  sos-watcher:
-    build: .
-    command: sos mq:archive --queue tweets --output-path-prefix /data/out/stream
-    restart: always
-    volumes:
-      - .:/data
-    depends_on:
-      - rabbitmq
-    networks:
-      - sos
-    env_file: .env
+  # sos-archive:
+  #   build: .
+  #   command: sos mq:archive --queue tweets --output-path-prefix /data/out/stream
+  #   restart: always
+  #   volumes:
+  #     - .:/data
+  #   depends_on:
+  #     - rabbitmq
+  #   networks:
+  #     - sos
+  #   env_file: .env
 
 volumes:
   rabbitmq-data:

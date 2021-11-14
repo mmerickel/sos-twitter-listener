@@ -5,12 +5,7 @@ import signal
 import tweepy
 import yaml
 
-from .output_streams import (
-    CompositeOutputStream,
-    FileOutputStream,
-    RabbitMqOutputStream,
-)
-from .settings import asduration
+from .output_streams import output_stream_from_config
 
 log = logging.getLogger(__name__)
 
@@ -79,20 +74,12 @@ def main(cli, args):
     with open(args.filter_file, 'r', encoding='utf8') as fp:
         filters = yaml.safe_load(fp)
 
-    stream_profile = profile.get('stream', {})
-    report_interval = stream_profile.get('report_interval')
-    if report_interval is not None:
-        report_interval = asduration(report_interval)
-
-    output_stream = CompositeOutputStream()
-    if args.output_path_prefix:
-        output_stream.add_stream(FileOutputStream(args.output_path_prefix))
-    if args.rabbitmq_routing_key:
-        output_stream.add_stream(RabbitMqOutputStream.from_profile(
-            profile['rabbitmq'],
-            exchange=args.rabbitmq_exchange,
-            routing_key=args.rabbitmq_routing_key,
-        ))
+    output_stream = output_stream_from_config(
+        profile,
+        output_path_prefix=args.output_path_prefix,
+        rabbitmq_exchange=args.rabbitmq_exchange,
+        rabbitmq_routing_key=args.rabbitmq_routing_key,
+    )
 
     tweet_stream = TweetStream(
         profile['twitter']['consumer_key'],
@@ -100,7 +87,7 @@ def main(cli, args):
         profile['twitter']['access_token'],
         profile['twitter']['access_token_secret'],
         output_stream=output_stream,
-        report_interval=report_interval,
+        report_interval=args.report_interval,
     )
 
     def on_sighup(*args):

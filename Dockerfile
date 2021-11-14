@@ -24,6 +24,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && apt-get clean
 
 COPY sos/ ./sos
-COPY docker-profile.yml ./profile.yml
+COPY profile.yml.tmpl ./profile.yml.tmpl
 
-ENTRYPOINT ["pipenv", "run"]
+ENTRYPOINT ["dockerize", "-template", "profile.yml.tmpl:profile.yml", "pipenv", "run"]

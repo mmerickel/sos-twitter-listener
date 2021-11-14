@@ -1,9 +1,9 @@
 from cached_property import cached_property
 from contextlib import contextmanager
 import logging
-from pyaml_env import parse_config
 import subparse
 import sys
+import yaml
 
 from . import commands
 
@@ -37,7 +37,8 @@ class App:
 
     @cached_property
     def profile(self):
-        return parse_config(self.profile_file, default_value='')
+        with open(self.profile_file, 'r', encoding='utf8') as fp:
+            return yaml.safe_load(fp)
 
     @contextmanager
     def input_file(self, path, *, text=True):
