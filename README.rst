@@ -9,4 +9,4 @@ Configure a file containing filter parameters (``potus.yml``)::
 
 Test it out::
 
-  docker-compose up
+  docker compose up
