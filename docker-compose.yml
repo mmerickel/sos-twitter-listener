@@ -14,7 +14,7 @@ services:
 
   sos-stream:
     build: .
-    command: sos twitter:stream --rabbitmq-routing-key tweets ${SOS_STREAM_FILTER_FILE:-/data/examples/cuba.yml}
+    command: sos twitter:stream --rabbitmq-routing-key tweets ${SOS_STREAM_FILTER_FILE:-/data/examples/cuba.yml} --output-path-prefix /data/out/tweets
     restart: always
     volumes:
       - .:/data
