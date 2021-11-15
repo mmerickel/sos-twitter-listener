@@ -27,7 +27,6 @@ class RabbitMqOutputStream:
         connection.add_on_connection_blocked_callback(self.on_connection_blocked)
         connection.add_on_connection_unblocked_callback(self.on_connection_unblocked)
         channel = connection.channel()
-        channel.add_on_close_callback(self.on_channel_closed)
         self.connection = connection
         return channel
 
@@ -36,10 +35,6 @@ class RabbitMqOutputStream:
 
     def on_connection_unblocked(self, connection, method):
         log.info('rabbit connection unblocked')
-
-    def on_channel_closed(self, channel, e):
-        log.error(f'channel closed, error={e}')
-        self.rotate()
 
     def close(self):
         if self.connection is not None:
@@ -67,10 +62,10 @@ class RabbitMqOutputStream:
                     content_type='application/json',
                 ),
             )
-        except Exception:
+        except pika.exceptions.AMQPError:
             if not retry:
                 raise
 
-            # try to do a quick retry
+            # do a single retry on an unknown failure
             self.rotate()
             self.on_status(status, retry=False)
