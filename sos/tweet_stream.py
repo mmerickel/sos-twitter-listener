@@ -37,6 +37,9 @@ class TweetStream(tweepy.Stream):
         data = json.loads(raw_data)
 
         if 'in_reply_to_status_id' in data:
+            # explicitly filter out retweets
+            if 'retweeted_status' in data:
+                return
             try:
                 self.output_stream.on_status(data)
             except Exception:
