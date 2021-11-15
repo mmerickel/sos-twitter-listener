@@ -57,12 +57,20 @@ class RabbitMqOutputStream:
     def rotate(self):
         self.close()
 
-    def on_status(self, status):
-        self.channel.basic_publish(
-            self.exchange,
-            self.routing_key,
-            json.dumps(status).encode('utf8'),
-            properties=pika.BasicProperties(
-                content_type='application/json',
-            ),
-        )
+    def on_status(self, status, *, retry=True):
+        try:
+            self.channel.basic_publish(
+                self.exchange,
+                self.routing_key,
+                json.dumps(status).encode('utf8'),
+                properties=pika.BasicProperties(
+                    content_type='application/json',
+                ),
+            )
+        except Exception:
+            if not retry:
+                raise
+
+            # try to do a quick retry
+            self.rotate()
+            self.on_status(status, retry=False)
