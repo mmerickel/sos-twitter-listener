@@ -56,3 +56,13 @@ def mq_archiver(parser):
     )
     parser.add_argument('--gcp-image-bucket')
     parser.add_argument('--gcp-firestore-collection')
+
+@command('.mq_replay', 'mq:replay')
+def mq_replay(parser):
+    """
+    Replay files from the output path into the queue.
+
+    """
+    parser.add_argument('--exchange', default='')
+    parser.add_argument('--routing-key', required=True)
+    parser.add_argument('--files', nargs='+', required=True)
